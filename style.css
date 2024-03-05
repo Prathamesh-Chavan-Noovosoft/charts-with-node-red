@@ -1,0 +1,63 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+svg {
+    background-color: white;
+}
+
+.svg-text {
+    font-size: 13px;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    min-height: 100vh;
+}
+
+.app-container {
+    margin: 0 2vw;
+}
+
+.user-input {
+    padding: 20px 0;
+    width: 98vw;
+    height: 420px;
+    display: flex;
+    gap: 20px;
+}
+
+#histogram-input,
+#control-plot-input {
+    padding: 60px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.textfield {
+    margin: 10px 0;
+    padding: 10px;
+    width: 200px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+button {
+    width: 200px;
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
