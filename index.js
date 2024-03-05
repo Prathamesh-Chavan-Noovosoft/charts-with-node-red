@@ -1,9 +1,21 @@
 import { setupControlPlotLogic } from "./scripts/models/controlplot";
 import { setupHistogramLogic } from "./scripts/models/histogram";
-
+import { app } from "./scripts/services/firebase";
+import { getDatabase, ref, onValue } from "firebase/database";
 // Main Program
 setupHistogramLogic();
 setupControlPlotLogic();
+
+const db = getDatabase(app);
+const starCountRef = ref(db, "chart-data/");
+onValue(starCountRef, (snapshot) => {
+    const data = snapshot.val();
+    updateStarCount(postElement, data);
+});
+
+async function fetchFromDb() { }
+
+fetchFromDb();
 
 // TODO:
 // Histogram
