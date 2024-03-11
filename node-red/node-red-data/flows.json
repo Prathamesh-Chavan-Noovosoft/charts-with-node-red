@@ -1,0 +1,141 @@
+[
+    {
+        "id": "65f788e50536774e",
+        "type": "tab",
+        "label": "Generate Voltage and Temperature Data",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "497cc46cb7574fe8",
+        "type": "debug",
+        "z": "65f788e50536774e",
+        "name": "log request result",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 890,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "19d01cb483ebebf7",
+        "type": "inject",
+        "z": "65f788e50536774e",
+        "name": "inject timestamp",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "1",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "10",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 170,
+        "y": 200,
+        "wires": [
+            [
+                "085406b53f90cac3",
+                "c745793e9d8db055"
+            ]
+        ]
+    },
+    {
+        "id": "e377dcdc47eb4e3c",
+        "type": "http request",
+        "z": "65f788e50536774e",
+        "name": "addRandomTemperature ",
+        "method": "use",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 610,
+        "y": 200,
+        "wires": [
+            [
+                "497cc46cb7574fe8"
+            ]
+        ]
+    },
+    {
+        "id": "085406b53f90cac3",
+        "type": "function",
+        "z": "65f788e50536774e",
+        "name": "generateRandomTemperatureObject",
+        "func": "console.log(msg.payload)\nlet time = msg.payload; // get Timestamp\nlet randomTemp = 30 + Math.random() * (40 - 30);\nreturn {\n    payload: randomTemp,\n    method: \"PUT\",\n    url: \"https://node-red-sim-default-rtdb.asia-southeast1.firebasedatabase.app/chart-data/temperature/\" + time + \".json\",\n}; // set new payload to points data & id to timestamp\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 120,
+        "wires": [
+            [
+                "e377dcdc47eb4e3c"
+            ]
+        ]
+    },
+    {
+        "id": "92f355b5133d6351",
+        "type": "http request",
+        "z": "65f788e50536774e",
+        "name": "addRandomVoltage",
+        "method": "use",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 630,
+        "y": 260,
+        "wires": [
+            [
+                "497cc46cb7574fe8"
+            ]
+        ]
+    },
+    {
+        "id": "c745793e9d8db055",
+        "type": "function",
+        "z": "65f788e50536774e",
+        "name": "generateRandomVoltageObject",
+        "func": "console.log(msg.payload)\nlet timestamp = msg.payload; // get Timestamp\nlet randomVoltage = 20 + Math.random() * (50 - 20);\nreturn {\n    payload: randomVoltage,\n    method: \"PUT\",\n    url: \"https://node-red-sim-default-rtdb.asia-southeast1.firebasedatabase.app/chart-data/voltage/\" + timestamp + \".json\",\n}; // set new payload to points data & id to timestamp\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 390,
+        "y": 340,
+        "wires": [
+            [
+                "92f355b5133d6351"
+            ]
+        ]
+    }
+]

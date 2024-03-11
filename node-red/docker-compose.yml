@@ -1,17 +1,8 @@
 version: "3"
 services:
-  mynodered:
+  node_red_container:
     image: nodered/node-red
     ports:
       - "3000:1880"
-# docker run -it -p 1880:1880 --name mynodered nodered/node-red
-
-# version: "3"
-# services:
-#   nodered:
-#     image: nodered/node-red
-#     ports:
-#       - "3000:1880"
-#     volumes:
-#       - /home/falconcodes-work/node_red_data:/data
-#     container_name: nodered_container
+    volumes:
+      - ./node-red-data/:/data
