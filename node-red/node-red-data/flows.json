@@ -34,14 +34,14 @@
                 "p": "payload"
             }
         ],
-        "repeat": "1",
+        "repeat": "",
         "crontab": "",
         "once": true,
         "onceDelay": "10",
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 170,
+        "x": 160,
         "y": 200,
         "wires": [
             [

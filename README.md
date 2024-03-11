@@ -66,9 +66,8 @@
 
 ```bash
 
-docker run -it -p 3000:1880 -v /home/falconcodes-work/node_red_data:/data --name nodered_container nodered/node-red
 
 # unpresisted
-docker run -it -p 1880:1880 -v node_red_data:/data --name mynodered nodered/node-red
+docker run -it -p 1880:1880 --name mynodered nodered/node-red
 
 ```
