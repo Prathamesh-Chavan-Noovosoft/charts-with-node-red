@@ -11,37 +11,18 @@
 
 <body>
     <div class="app-container">
-        <div class="svg-wrapper">
-            <svg id="svg1" width="95vw" height="420" viewBox="0 0 1200 420"></svg>
-            <div class="is-control-plot">
-                <button id="rule-1" class="verify-button">Verify Rule 1</button>
-                <button id="rule-2">Verify Rule 2</button>
-                <button id="rule-3">Verify Rule 3</button>
-                <button id="rule-4">Verify Rule 4</button>
-                <button id="rule-5">Verify Rule 5</button>
-                <button id="rule-6">Verify Rule 6</button>
-                <button id="rule-7">Verify Rule 7</button>
-                <button id="clear">Clear</button>
-            </div>
-        </div>
-        <div class="user-input">
-            <div id="histogram-input">
-                <p>Choose Type</p>
-                <label for="choice1">By Interval size</label>
-                <input id="interval-input" class="textfield" type="text" placeholder="Enter the input size: " />
-                <label for="choice1">By no. of bins</label>
-                <input id="bins-input" class="textfield" type="text" placeholder="Enter the number of bins: " />
-                <button id="create-histogram" type="submit">Create Histogram</button>
-            </div>
-            <div id="control-plot-input">
-                <button id="create-control-plot" type="submit">
-                    Create Control plot
-                </button>
-            </div>
-        </div>
+        <h1>Real Time Data of Voltage & Temperature</h1>
+        <svg id="combinedChart" width="95vw" height="420" viewBox="0 0 1200 420"></svg>
+        <h1>Average Data per 15 seconds of Temperature data</h1>
+        <svg id="temperatureChart" width="95vw" height="420" viewBox="0 0 1200 420"></svg>
+        <h1>Average Data per 15 seconds of Voltage data</h1>
+        <svg id="voltageChart" width="95vw" height="420" viewBox="0 0 1200 420"></svg>
+
+        <!-- <button id="create-temperature-graph">Create Temperature Graph</button> -->
+        <!-- <button id="create-voltage-graph">Create Voltage Graph</button> -->
+        <!-- <button id="create-combined-graph">Create Combined Graph</button> -->
+        <!-- <button id="clear">Clear</button> -->
     </div>
-    <!-- <script src="./scripts/data/samples.js"></script> -->
-    <!-- <script src="./scripts/data/histogram_data.js"></script> -->
     <script src="index.js" type="module"></script>
 </body>
 
