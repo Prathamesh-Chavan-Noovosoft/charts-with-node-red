@@ -1,13 +1,11 @@
-import { onValue, onChildAdded } from "firebase/database";
+import { onChildAdded } from "firebase/database";
 import {
-    chartDataRef,
     temperatureDataRef,
     voltageDataRef,
 } from "./scripts/services/firebase.js";
 import { buildLineChart } from "./scripts/models/lineChart.js";
 import {
     averageOfDataPoints,
-    convertNestedObjectToSlicedArray,
     sliceInput,
     logArray,
 } from "./scripts/data/cleanRealTimeData.js";
