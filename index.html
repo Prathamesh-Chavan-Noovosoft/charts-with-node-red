@@ -1,29 +1,42 @@
 <!doctype html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <title>Charts Exercise</title>
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="app-container">
-        <h1>Real Time Data of Voltage & Temperature</h1>
-        <svg id="combinedChart" width="95vw" height="420" viewBox="0 0 1200 420"></svg>
-        <h1>Average Data per 15 seconds of Temperature data</h1>
-        <svg id="temperatureChart" width="95vw" height="420" viewBox="0 0 1200 420"></svg>
-        <h1>Average Data per 15 seconds of Voltage data</h1>
-        <svg id="voltageChart" width="95vw" height="420" viewBox="0 0 1200 420"></svg>
+      <h1>Real Time Data of Voltage & Temperature</h1>
+      <svg
+        id="combinedChart"
+        width="95vw"
+        height="420"
+        viewBox="0 0 1200 420"
+      ></svg>
+      <h1>Average Data of Last 10 minutes of Temperature data</h1>
+      <svg
+        id="temperatureChart"
+        width="95vw"
+        height="420"
+        viewBox="0 0 1200 420"
+      ></svg>
+      <h1>Average Data of Last 10 minutes of Voltage data</h1>
+      <svg
+        id="voltageChart"
+        width="95vw"
+        height="420"
+        viewBox="0 0 1200 420"
+      ></svg>
 
-        <!-- <button id="create-temperature-graph">Create Temperature Graph</button> -->
-        <!-- <button id="create-voltage-graph">Create Voltage Graph</button> -->
-        <!-- <button id="create-combined-graph">Create Combined Graph</button> -->
-        <!-- <button id="clear">Clear</button> -->
+      <!-- <button id="create-temperature-graph">Create Temperature Graph</button> -->
+      <!-- <button id="create-voltage-graph">Create Voltage Graph</button> -->
+      <!-- <button id="create-combined-graph">Create Combined Graph</button> -->
+      <!-- <button id="clear">Clear</button> -->
     </div>
     <script src="index.js" type="module"></script>
-</body>
-
+  </body>
 </html>
