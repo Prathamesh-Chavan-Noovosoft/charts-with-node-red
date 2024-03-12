@@ -1,22 +1,31 @@
-import { onChildAdded } from "firebase/database";
+// Database references & functions
+import { onValue, onChildAdded } from "firebase/database";
 import {
+    chartDataRef,
     temperatureDataRef,
     voltageDataRef,
 } from "./scripts/services/firebase.js";
+
+// Graph drawing functions
+import { createGraph, drawGraph } from "./scripts/models/graph.js";
 import { buildLineChart } from "./scripts/models/lineChart.js";
 import {
+    convertNestedObjectToSlicedArray,
     averageOfDataPoints,
     sliceInput,
     logArray,
 } from "./scripts/data/cleanRealTimeData.js";
-import { createGraph, drawGraph } from "./scripts/models/graph.js";
 
 /**
     @params {Array} temperatureArray, {Array} voltageArray -> Stores the real time data everytime it updates
 
     This function draws the line chart points for the realtime temperature and voltage data
 */
-function realTimeChartDataListener(temperatureArray, voltageArray) {
+function realTimeChartDataListener(
+    temperatureArray,
+    voltageArray,
+    numDatapoints,
+) {
     const combinedChart = document.getElementById("combinedChart");
 
     let combinedGraph = createGraph({
@@ -27,52 +36,12 @@ function realTimeChartDataListener(temperatureArray, voltageArray) {
         yIntervalSize: 1,
     });
 
-    onChildAdded(temperatureDataRef, (snapshot) => {
-        const data = snapshot.val();
-        temperatureArray.push(data);
-        temperatureArray = sliceInput(temperatureArray, 60);
-
-        combinedGraph = createGraph({
-            svg: combinedChart,
-            xMin: 0,
-            data: temperatureArray,
-            data2: voltageArray,
-            yIntervalSize: 1,
-        });
-        drawGraph(combinedGraph);
-        buildLineChart({
-            graph: combinedGraph,
-            color: "green",
-            lineColor: "lightgreen",
-            color2: "purple",
-            lineColor2: "violet",
-        });
-    });
-    onChildAdded(voltageDataRef, (snapshot) => {
-        const data = snapshot.val();
-        voltageArray.push(data);
-        voltageArray = sliceInput(voltageArray, 60);
-    });
-
-    // // // old logic
-    // onValue(chartDataRef, (snapshot) => {
+    // onChildAdded(temperatureDataRef, (snapshot) => {
     //     const data = snapshot.val();
+    //     temperatureArray.push(data);
+    //     temperatureArray = sliceInput(temperatureArray, numDatapoints);
     //
-    //     // Clean Data
-    //     const temperatureArray = convertNestedObjectToSlicedArray(
-    //         data.temperature,
-    //         60,
-    //         "Temperature Data",
-    //     );
-    //
-    //     const voltageArray = convertNestedObjectToSlicedArray(
-    //         data.voltage,
-    //         60,
-    //         "Voltage Data",
-    //     );
-    //
-    //     const combinedChart = document.getElementById("combinedChart");
-    //     let combinedGraph = createGraph({
+    //     combinedGraph = createGraph({
     //         svg: combinedChart,
     //         xMin: 0,
     //         data: temperatureArray,
@@ -88,33 +57,135 @@ function realTimeChartDataListener(temperatureArray, voltageArray) {
     //         lineColor2: "violet",
     //     });
     // });
+
+    // onChildAdded(voltageDataRef, (snapshot) => {
+    //     const data = snapshot.val();
+    //     voltageArray.push(data);
+    //     voltageArray = sliceInput(voltageArray, numDatapoints);
+    // });
+
+    onValue(chartDataRef, (snapshot) => {
+        const data = snapshot.val();
+
+        // Clean Data
+        const temperatureArray = convertNestedObjectToSlicedArray(
+            data.temperature,
+            60,
+            "Temperature Data",
+        );
+
+        const voltageArray = convertNestedObjectToSlicedArray(
+            data.voltage,
+            60,
+            "Voltage Data",
+        );
+
+        const combinedChart = document.getElementById("combinedChart");
+        let combinedGraph = createGraph({
+            svg: combinedChart,
+            xMin: 0,
+            data: temperatureArray,
+            data2: voltageArray,
+            yIntervalSize: 1,
+        });
+        drawGraph(combinedGraph);
+        buildLineChart({
+            graph: combinedGraph,
+            color: "green",
+            lineColor: "lightgreen",
+            color2: "purple",
+            lineColor2: "violet",
+        });
+    });
 }
 
-function averageDataListener({
-    temperatureArray,
-    voltageArray,
-    avgVoltageArray,
-    avgTemperatureArray,
-}) {
+/**
+    @params {Array} temperatureArray, {Array} voltageArray -> Stores the real time data everytime it updates
+
+    This function draws the line chart of Periodical average of data over a certain period of time
+*/
+function averageDataListener({ avgVoltageArray, avgTemperatureArray }) {
     const temperatureChart = document.getElementById("temperatureChart");
     const voltageChart = document.getElementById("voltageChart");
 
-    let rawTemperatureArray = [];
-    let rawVoltageArray = [];
+    // onChildAdded(temperatureDataRef, (snapshot) => {
+    //     const data = snapshot.val();
+    //
+    //     rawTemperatureData.add(data);
+    //
+    //     if (rawTemperatureData.length >= timePeriod) {
+    //         avgTemperatureArray.push(averageOfDataPoints(rawTemperatureData));
+    //         avgTemperatureArray = sliceInput(avgTemperatureArray, numDatapoints);
+    //         logArray("Average Temperature : ", avgTemperatureArray);
+    //
+    //         let temperatureGraph = createGraph({
+    //             svg: temperatureChart,
+    //             xMin: 0,
+    //             data: avgTemperatureArray,
+    //             data2: [],
+    //             yIntervalSize: 1,
+    //         });
+    //         drawGraph(temperatureGraph);
+    //         buildLineChart({
+    //             graph: temperatureGraph,
+    //             color: "green",
+    //             lineColor: "lightgreen",
+    //         });
+    //         rawTemperatureData = new Set();
+    //     }
+    // });
+    //
+    // onChildAdded(voltageDataRef, (snapshot) => {
+    //     const data = snapshot.val();
+    //
+    //     rawVoltageData.add(data);
+    //     if (rawVoltageData.length >= timePeriod) {
+    //         avgVoltageArray.push(averageOfDataPoints(rawVoltageData));
+    //         avgVoltageArray = sliceInput(avgVoltageArray, numDatapoints);
+    //         logArray("Average Voltage last : ", avgVoltageArray);
+    //
+    //         let voltageGraph = createGraph({
+    //             svg: voltageChart,
+    //             xMin: 0,
+    //             data: avgVoltageArray,
+    //             data2: [],
+    //             yIntervalSize: 1,
+    //         });
+    //         drawGraph(voltageGraph);
+    //         buildLineChart({
+    //             graph: voltageGraph,
+    //             color: "blue",
+    //             color2: "black",
+    //             lineColor: "lightblue",
+    //             lineColor2: "black",
+    //         });
+    //         rawVoltageData = new Set();
+    //     }
+    // });
 
-    onChildAdded(temperatureDataRef, (snapshot) => {
-        const data = snapshot.val();
+    onValue(
+        chartDataRef,
+        (snapshot) => {
+            const data = snapshot.val();
+            const rawVoltage = convertNestedObjectToSlicedArray(
+                data.voltage,
+                15,
+                "Voltage data: ",
+            );
 
-        rawTemperatureArray.push(data);
-        if (rawTemperatureArray.length >= 15) {
-            avgTemperatureArray.push(averageOfDataPoints(rawTemperatureArray));
-            avgTemperatureArray = sliceInput(avgTemperatureArray, 60);
-            logArray("Average Temperature last 15 secs: ", avgTemperatureArray);
+            const rawTemperature = convertNestedObjectToSlicedArray(
+                data.temperature,
+                15,
+                "Temperature data: ",
+            );
+
+            avgVoltageArray.push(averageOfDataPoints(rawVoltage));
+            avgTemperatureArray.push(averageOfDataPoints(rawTemperature));
 
             let temperatureGraph = createGraph({
                 svg: temperatureChart,
                 xMin: 0,
-                data: temperatureArray,
+                data: avgTemperatureArray,
                 data2: [],
                 yIntervalSize: 1,
             });
@@ -125,24 +196,10 @@ function averageDataListener({
                 lineColor: "lightgreen",
             });
 
-            rawTemperatureArray = [];
-        }
-    });
-
-    onChildAdded(voltageDataRef, (snapshot) => {
-        const data = snapshot.val();
-
-        rawVoltageArray.push(data);
-        logArray("Last 15  Voltage Data: ", rawVoltageArray);
-        if (rawVoltageArray.length >= 15) {
-            avgVoltageArray.push(averageOfDataPoints(rawVoltageArray));
-            avgVoltageArray = sliceInput(avgVoltageArray, 60);
-            logArray("Average Voltage last 15 secs: ", avgVoltageArray);
-
             let voltageGraph = createGraph({
                 svg: voltageChart,
                 xMin: 0,
-                data: voltageArray,
+                data: avgVoltageArray,
                 data2: [],
                 yIntervalSize: 1,
             });
@@ -154,22 +211,24 @@ function averageDataListener({
                 lineColor: "lightblue",
                 lineColor2: "black",
             });
-
-            rawVoltageArray = [];
-        }
-    });
+        },
+        {
+            onlyOnce: true,
+        },
+    );
 }
 
 // Main Program
+const numDatapoints = 60; // 60 points
+const averageDataMins = 10; // 10 mins
+const timePeriod = (averageDataMins * 60) / numDatapoints; // take average every 10 secs
+
 // Listen for Real-time Changes in Temperature & Voltage
 let combinedTemperatureArray = [];
 let combinedVoltageArray = [];
 realTimeChartDataListener(combinedTemperatureArray, combinedVoltageArray);
 
 // Fetch Average of last n seconds
-let voltageArray = [];
-let temperatureArray = [];
-
 let avgTemperatureArray = [];
 let avgVoltageArray = [];
 
@@ -177,10 +236,10 @@ setInterval(() => {
     averageDataListener({
         avgTemperatureArray,
         avgVoltageArray,
-        temperatureArray,
-        voltageArray,
+        numDatapoints,
+        timePeriod,
     });
-}, 15000);
+}, 15 * 1000);
 
 // TODO:
 

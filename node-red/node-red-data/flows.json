@@ -34,7 +34,7 @@
                 "p": "payload"
             }
         ],
-        "repeat": "10",
+        "repeat": "1",
         "crontab": "",
         "once": true,
         "onceDelay": "10",
