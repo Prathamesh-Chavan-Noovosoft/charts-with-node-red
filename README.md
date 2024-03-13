@@ -1,4 +1,19 @@
+#
+
 # Simulation Exercise (Node-RED-Firebase-JS)
+
+Dev Branch - master
+Production Branch - stable\*
+
+## Issues
+
+- onChildAdded from firebase realtime database is running constantly to
+  check for updates in the database, All the code execution was inside
+  that listener, this oversight is causing the FE to crash due to memory
+  overload, this commit switches to onValue function which is responding
+  in a stable manner.
+
+# Exercise
 
 - Simulate a live time series voltage & temperature data stream from [Node-RED](https://nodered.org).
 - Push the said data stream from Node-RED to [Google Firebase Realtime Database](https://firebase.google.com/docs/database) using any HTTP client in Node-RED.
@@ -65,9 +80,10 @@
 ## Running Node Red With Docker
 
 ```bash
-
+# with volume
+docker volume create node-red-data
+docker run -it -p 1880:1880 --name mynodered -v node-red-data:/data nodered/node-red
 
 # unpresisted
 docker run -it -p 1880:1880 --name mynodered nodered/node-red
-
 ```
